@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<title>批量地址</title>
+	<style type="text/css">
+		body, html{width: 100%;height: 100%;margin:0;font-family:"微软雅黑";}
+		#l-map{height:100%;width:50%;display: inline-block;}
+		#r-result{width:49%;height:100%;overflow-y: auto;display: inline-block; font-size:14px;line-height:20px;}
+	</style>
+	
+</head>
+<body>
+	<div id="l-map"></div>
+	<div id="r-result">
+		<input type="button" value="批量地址解析" onclick="bdGEO()" />
+		<input type="button" value="聚合" onclick="cluster()" />
+		<div id="result"></div>
+	</div>
+</body>
+<script type="text/javascript" src="//api.map.baidu.com/api?v=2.0&ak=WSrX4bCfgcjTfhWNCwvfI1ZnQnfZDxFW&amp;ver=1"></script>
+<script type="text/javascript" src="//api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>
+<script src="js/MarkerClusterer_min.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/addr.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/index.js" type="text/javascript" charset="utf-8"></script>
+</html>

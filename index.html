@@ -4,24 +4,95 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf8" />
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 	<title>批量地址</title>
+	<link rel="stylesheet" href="https://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css" />
 	<style type="text/css">
 		body, html{width: 100%;height: 100%;margin:0;font-family:"微软雅黑";}
-		#l-map{height:100%;width:50%;display: inline-block;}
-		#r-result{width:49%;height:100%;overflow-y: auto;display: inline-block; font-size:14px;line-height:20px;}
+		#l-map{
+			height:100%;
+			width:100%;
+			/*display: inline-block;*/
+		}
+		/*#r-result{width:49%;height:100%;overflow-y: auto;display: inline-block; font-size:14px;line-height:20px;}*/
+		.statistic{
+			width: auto;
+    		height: 235px;
+		    background: rgba(174, 220, 252, 0.6);
+		    position: fixed;
+		    top: 0;
+		    left: 0;
+		    padding: 15px;
+		    display: inline-block;
+		}
+		.statistic>p{
+			font-size: 38px;
+		    font-weight: bold;
+		    color: #3fafff;
+		    margin: 0;
+		    padding: 0;
+		    letter-spacing: 4px;
+		    white-space: nowrap;
+		}
+		.statistic>button{
+		    width: 80px;
+			height: 28px;
+			background: #3fafff;
+			border-radius: 5px;
+			box-shadow: unset;
+			margin: 5px;
+			padding: 0;
+			color: #fff;
+			cursor: pointer;
+			border: 1px solid #fff;
+		}
+		.statistic span{
+			margin-right: 15px;
+		}
+		.anchorBL,.BMap_cpyCtrl{
+			display: none;
+		}
+		#adds_0_s,
+		#adds_1_s,
+		#adds_2_s,
+		#adds_3_s{
+			color: red;
+		}
 	</style>
 	
 </head>
 <body>
 	<div id="l-map"></div>
+	<div class="statistic">
+		<p>
+			<img src="img/marker_red_sprite.png"/>
+			<span>低压故障:</span><span id="adds_0"></span><span id="adds_0_s"></span>
+		</p>
+		<p>
+			<img src="img/marker_OrangeRed_sprite.png"/>
+			<span>高压故障:</span><span id="adds_1"></span><span id="adds_1_s"></span>
+		</p>
+		<p>
+			<img src="img/marker_Orange_sprite.png"/>
+			<span>计量故障:</span><span id="adds_2"></span><span id="adds_2_s"></span>
+		</p>
+		<p>
+			<img src="img/marker_blue_sprite.png"/>
+			<span>电能质量:</span><span id="adds_3"></span><span id="adds_3_s"></span>
+		</p>
+		<button onclick="clearAll()">清除区域</button>
+	</div>
 	<div id="r-result">
-		<input type="button" value="批量地址解析" onclick="bdGEO()" />
-		<input type="button" value="聚合" onclick="cluster()" />
+		<!--<input type="button" value="批量地址解析" onclick="bdGEO()" />-->
+		<!--<input type="button" value="聚合" onclick="cluster()" />-->
 		<div id="result"></div>
 	</div>
 </body>
-<script type="text/javascript" src="//api.map.baidu.com/api?v=2.0&ak=WSrX4bCfgcjTfhWNCwvfI1ZnQnfZDxFW&amp;ver=1"></script>
-<script type="text/javascript" src="//api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>
-<script src="js/MarkerClusterer_min.js" type="text/javascript" charset="utf-8"></script>
 <script src="js/addr.js" type="text/javascript" charset="utf-8"></script>
-<script src="js/index.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=WSrX4bCfgcjTfhWNCwvfI1ZnQnfZDxFW&amp;ver=1"></script>
+<script type="text/javascript" src="https://api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>
+<script type="text/javascript" src="https://api.map.baidu.com/library/AreaRestriction/1.2/src/AreaRestriction_min.js"></script>
+<script type="text/javascript" src="https://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.js"></script>
+<script type="text/javascript" src="https://api.map.baidu.com/library/GeoUtils/1.2/src/GeoUtils_min.js"></script>
+	
+<script src="js/markerCluster.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/index.min.js" type="text/javascript" charset="utf-8"></script>
 </html>

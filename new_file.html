@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			html,body,#map{
+			width: 100%;
+			height: 100%;	
+			}
+		</style>
+		<link rel="stylesheet" href="https://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css" />
+	</head>
+	<body>
+		<div id="map">
+			
+		</div>
+		
+<!--加载鼠标绘制工具-->
+<script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=WSrX4bCfgcjTfhWNCwvfI1ZnQnfZDxFW&amp;ver=1"></script>
+<script type="text/javascript" src="https://api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>
+<script type="text/javascript" src="https://api.map.baidu.com/library/AreaRestriction/1.2/src/AreaRestriction_min.js"></script>\<script type="text/javascript" src="//api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.js"></script>
+<script type="text/javascript" src="https://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.js"></script>
+<script type="text/javascript" src="https://api.map.baidu.com/library/GeoUtils/1.2/src/GeoUtils_min.js"></script>
+
+<script src="js/addr.js" type="text/javascript" charset="utf-8"></script>
+		</script>
+		<script type="text/javascript">
+			
+// 初始化百度地图
+var map = new BMap.Map('map');
+map.centerAndZoom(new BMap.Point(116.3875773621, 39.9156402091), 6);	//初始化地图,设置中心点坐标和地图级别
+map.enableScrollWheelZoom();	//开启鼠标滚轮缩放
+var myGeo = new BMap.Geocoder();
+ 
+//被定位在地图中的6个点
+//var locPoints = [
+//		new BMap.Point(108.574138248194, 34.197235684692),
+//		new BMap.Point(108.683296262141, 33.877960833917),
+//		new BMap.Point(108.518062680055, 38.057251109697),
+//		new BMap.Point(108.546627635172, 38.312875770488),
+//		new BMap.Point(109.151927017928, 34.686473580787),
+//		new BMap.Point(108.411427712714, 33.266286514603)
+//	];
+var locPoints = [];
+var icon_0 = new BMap.Icon("../img/marker_red_sprite.png",new BMap.Size(47, 52));
+	addr.forEach(item =>{
+					geocodeSearch(item,icon_0);
+		});
+		function geocodeSearch(add,myIcon){
+		myGeo.getPoint(add['故障地址'], function(point){
+			if (point) {
+//				document.getElementById("result").innerHTML +=  add['工单编号']+'-'+add['故障地址'] + ":" + point.lng + "," + point.lat + "</br>";
+				var address = new BMap.Point(point.lng, point.lat);
+//				locPoints.push(address)
+				addMarker(address,myIcon,add);
+			}
+		}, "重庆市");
+	}
+	// 编写自定义函数,创建标注
+	function addMarker(point,myIcon,add){
+		var marker = new BMap.Marker(point,{icon:myIcon});
+		marker.setLabel(new BMap.Label(add['工单编号'],{offset:new BMap.Size(20,-10)}));
+		map.addOverlay(marker);
+		marker.markerType=add['故障类型'];
+		console.log(marker)
+		locPoints.push(marker);
+	}
+				 
+//将6个点定位在地图中
+//locPoints.forEach(function(value) {  
+//	var locMarkers;
+//	locMarkers = new BMap.Marker(value);
+// 
+//	map.addOverlay(locMarkers);		//将标注添加到地图中
+//	
+//	locMarkers.disableMassClear();	//设置marker不可被清除
+//	
+//	locMarkers.addEventListener("mouseover",function (e) {
+//		openDataInfo(value, e);
+//	});  
+//});
+ 
+//鼠标滑过marker事件
+function openDataInfo(result, e) {
+	var carOpts = {
+			width : 200,     // 信息窗口宽度
+			height: 120,     // 信息窗口高度
+			title : "<b>设备信息</b>" , // 信息窗口标题
+			enableMessage:true	//设置允许信息窗发送短息
+		};
+	
+	var p = e.target;
+	
+	var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+	
+	carContent = '<br/><table><thead>'+
+		'<tr><th><label>快速操作：</label><a οnclick="showOrderTrackDiv()"><span style="color:#478FCA; margin-left:15px;">轨迹回放</span></a></th></tr></thead><tbody>'+
+		'<tr><td>经度：'+p.getPosition().lng+'</td></tr><tr><td>纬度：'+p.getPosition().lat+'</td></tr>'+
+		'</tbody></table></div>';
+	
+	var infoWindow = new BMap.InfoWindow(carContent, carOpts); // 创建信息窗口对象   
+	map.openInfoWindow(infoWindow, point); //开启信息窗口  
+}
+ 
+//轨迹回放函数
+function showOrderTrackDiv(){
+	alert("轨迹回放函数");
+}
+
+
+var styleOptions = {
+	strokeColor:"black",    //边线颜色。
+	fillColor:"red",      //填充颜色。当参数为空时，圆形将没有填充效果。
+	strokeWeight: 3,       //边线的宽度，以像素为单位。
+	strokeOpacity: 0.8,	   //边线透明度，取值范围0 - 1。
+	fillOpacity: 0.6,      //填充的透明度，取值范围0 - 1。
+	strokeStyle: 'solid' //边线的样式，solid或dashed。
+}
+ 
+//实例化鼠标绘制工具
+var myDrawingManagerObject = new BMapLib.DrawingManager(map, {
+	isOpen: false, //是否开启绘制模式
+	enableDrawingTool: true, //是否显示工具栏
+	drawingToolOptions: {
+		anchor: BMAP_ANCHOR_TOP_RIGHT, //位置
+		offset: new BMap.Size(5, 5), //偏离值
+	},
+	circleOptions: styleOptions, //圆的样式
+	polylineOptions: styleOptions, //线的样式
+	polygonOptions: styleOptions, //多边形的样式
+	rectangleOptions: styleOptions //矩形的样式
+});
+ 
+ //添加鼠标绘制工具监听事件，用于获取绘制结果
+myDrawingManagerObject.addEventListener('overlaycomplete', overlaycomplete);
+
+function overlaycomplete(e){
+	
+	var cirCount = 0;
+	var polyCount = 0;
+	
+	myDrawingManagerObject.close();		//关闭画图
+	
+	var drawingModeType = e.drawingMode;	//获取所画图形类型
+	
+	locPoints.forEach(function(value) {
+		var point = new BMap.Point(value.point.lng, value.point.lat)
+		if (drawingModeType == "circle") {
+			//圆
+			if(BMapLib.GeoUtils.isPointInCircle(point, e.overlay)) {  
+				cirCount++;
+			}  
+		} else if (drawingModeType == "rectangle" || drawingModeType == "polygon") {
+			//矩形  或  多边形
+			if(BMapLib.GeoUtils.isPointInPolygon(point, e.overlay)) {
+				polyCount++;
+			}
+		}
+	});
+	
+	alert("圆中包含"+cirCount+"个定位点，多边形或矩形中包含"+polyCount+"个定位点。");
+				
+	map.removeOverlay(e.overlay);	//画完后清除所画对象
+	}
+	</script>
+	</body>
+</html>

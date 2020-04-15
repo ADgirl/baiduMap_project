@@ -60,6 +60,7 @@
 		document.getElementById('adds_1').innerHTML = adds_1.length;
 		document.getElementById('adds_2').innerHTML = adds_2.length;
 		document.getElementById('adds_3').innerHTML = adds_3.length;
+		document.getElementById('adds_4').innerHTML = adds_0.length+adds_1.length+adds_2.length+adds_3.length;
 //		setTimeout(() =>{
 //			cluster();
 //		},2000)
@@ -105,6 +106,7 @@
 		document.getElementById('adds_1_s').innerHTML = adds_1_s;
 		document.getElementById('adds_2_s').innerHTML = adds_2_s;
 		document.getElementById('adds_3_s').innerHTML = adds_3_s;
+		document.getElementById('adds_4_s').innerHTML = adds_0_s+adds_1_s+adds_2_s+adds_3_s;
 		
     };
     function clearAll(){
@@ -113,6 +115,7 @@
 		document.getElementById('adds_1_s').innerHTML = '';
 		document.getElementById('adds_2_s').innerHTML = '';
 		document.getElementById('adds_3_s').innerHTML = '';
+		document.getElementById('adds_4_s').innerHTML = '';
     }
     var styleOptions = {
         strokeColor:"red",    //边线颜色。
@@ -125,7 +128,7 @@
     //实例化鼠标绘制工具
     var drawingManager = new BMapLib.DrawingManager(map, {
         isOpen: false, //是否开启绘制模式
-        enableDrawingTool: true, //是否显示工具栏
+        enableDrawingTool: false, //是否显示工具栏
         drawingToolOptions: {
             anchor: BMAP_ANCHOR_TOP_RIGHT, //位置
             offset: new BMap.Size(5, 5), //偏离值

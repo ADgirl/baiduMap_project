@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" charset="utf-8">
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+<!-- <link rel="stylesheet" href="/Public/Css/demo.Default.css" type="text/css" /> -->
+<title>高德地理编码</title>
+<style type="text/css">
+body, html{width: 100%;height: 100%;margin:0;font-family:"微软雅黑";background-image:url("3.jpg");}
+.navi_head{
+height:50px;
+background-color:#459df5;
+}
+.navi_body{
+overflow:hidden;
+height:50px;
+background:rgba(36,97,158,0.9);
+transition:height ease 0.5s;
+}
+.navi_body:hover{
+height:150px;
+}
+
+.navi_head>div>span{
+width:150px;
+text-align:center;
+height:150px;
+display:inline-block;
+font-weight:bold;
+color:#FFF;
+font-size:14px;
+vertical-align:top;
+}
+
+.navi_head>div>span>p a{
+color:#FFF;
+text-decoration:none;
+}
+.navi_head>div>span>p a:hover{
+color:#FFF;
+text-decoration:underline;
+}
+
+.navi_title{
+font-size:16px;
+line-height:50px;
+margin-top:0;
+}
+
+.navi_head>div>span:hover{
+background:rgba(100,100,100,0.2);
+}
+</style>
+<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=aa045522d491e37a1d5fb6f47e1d7229&plugin=AMap.Geocoder,AMap.Scale,AMap.OverView,AMap.ToolBar"></script>
+
+</head>
+<body>
+<!--把界面分成几块就行-->
+<!--导航栏div-->
+<div>
+<div class="navi_body">
+<div class="navi_head">
+<div style="width:80%; margin-left:auto; margin-right:auto;">
+<span>
+<p class="navi_title">地理编码</p>
+</span>
+<span>
+<p class="navi_title">地址解析</p>
+<p><a onclick="bdGEO()">批量地址解析</a></p>
+<p></p>
+</span>
+<span>
+<p class="navi_title">逆地址解析</p>
+<p><a onclick="REbdGEO()">批量逆地址解析</a></p>
+</span>
+<span>
+<p class="navi_title">文档保存</p>
+<p><a onclick="return exportToWord('end')">保存反解析结果</a></p>
+<p><a onclick="return exportToWord('converttogcjresult')">转为百度坐标</a></p>
+</span>
+</div>
+</div>
+</div>
+</div>
+
+<!--工具DIV-->
+<div id="toolBarDiv" style="width:1024px;text-align:right;">
+<p id="toolBar" style="width:880px;">
+<input type="file" id="upfile" /><input type="button" onclick="readThis();" value="读取"/>
+<input type="button" onclick="readThispoint();" value="读取百度坐标"/>
+<input type="text" id="num" value="打点数" style="width:40px;background:#CCE8CF;"/>
+</p>
+</div>
+
+<!--结果DIV-->
+<div id="rightDiv" style="float:right;width:34%;top:0px;height:100%;text-align:center;">
+<p>Geocoding</p>
+<div id="result" style="width:100%;height:38%;margin:0 auto;overflow-y :auto;background-color:gray;text-align:left;"></div>
+<p>Regeocoding</p>
+<div id="end" style="width:100%;height:38%;margin:0 auto;overflow-y :auto;background-color:gray;text-align:left;"></div>
+<div id="txtArea" style="display:none;"></div>
+<div id="txtArea1" style="display:none;"></div>
+<div id="txtArea2" style="display:none;"></div>
+</div>
+
+<!--地图DIV-->
+
+<div id="iCenter" style="width:65%;height:90%"></div>
+<div class="button-group">
+<input type="button" class="button" value="删除多个点标记" id="clearMarker"/>
+</div>
+</body>
+<script type="text/javascript" language="javascript">
+var index=0;
+var adds=[];
+var add;
+var ind=0;
+var readds=[];
+var x=[]; //获取经度数组
+var r=[];
+//获取纬度数组
+var myGeo = new AMap.Geocoder({
+radius: 1000,
+extensions: "all"
+});
+var mapObj,toolbar,overview,scale;
+var opt = {
+level:10,//设置地图缩放级别
+center:new AMap.LngLat(116.397428,39.90923),//设置地图中心点
+doubleClickZoom:true,//双击放大地图
+scrollWheel:true//鼠标滚轮缩放地图
+}
+
+mapObj = new AMap.Map("iCenter",opt);
+toolbar = new AMap.ToolBar();
+toolbar.autoPosition=false; //加载工具条
+mapObj.addControl(toolbar);
+overview = new AMap.OverView(); //加载鹰眼
+mapObj.addControl(overview);
+scale = new AMap.Scale(); //加载比例尺
+mapObj.addControl(scale);
+
+AMap.event.addDomListener(document.getElementById('clearMarker'), 'click', function() {
+mapObj.remove(markers);
+}, false);
+//地址解析
+function bdGEO(){
+add = adds[index];
+geocodeSearch();
+index++;
+}
+function geocodeSearch(){
+
+if(index < adds.length-2){
+setTimeout(window.bdGEO,200);
+}
+geocoder();
+}
+function geocoder() {
+//地理编码,返回地理编码结果
+myGeo.getLocation(add, function(status, result) {
+if (status === 'complete' && result.info === 'OK') {
+geocoder_CallBack(result);
+}
+else{
+document.getElementById("result").innerHTML +=index+"解析失败，请输入正确的地址！"+"</br></br>";
+//alert(index+"解析失败，请输入正确的地址！");
+}
+});
+}
+function geocoder_CallBack(data) {
+var geocode = data.geocodes;
+for (var i = 0; i < geocode.length; i++) {
+var reid=index;
+document.getElementById("result").innerHTML +="<a id=\"reid\" onclick=\"dianji();\" style=\"background-color:white\">"+index+",&nbsp" +geocode[i].formattedAddress+"&nbsp匹配级别：&nbsp" +geocode[i].level+"&nbsp经纬度;"+ geocode[i].location.getLng() + ", " + geocode[i].location.getLat() +"</a>"+"</br></br>" ;
+//alert(document.getElementById("result").innerHTML);
+x[index-1]=geocode[i].location.getLng();
+r[index-1]=geocode[i].location.getLat();
+//alert(r[index-1]);
+
+addMarker(i, geocode[i]);
+}
+document.getElementById("num").value=index; //获取打点条数
+mapObj.setFitView();
+}
+//标记点位方法
+function addMarker(i, d) {
+var marker = new AMap.Marker({
+map: mapObj,
+position: [ d.location.getLng(), d.location.getLat()]
+});
+var infoWindow = new AMap.InfoWindow({
+content: index+d.formattedAddress,
+offset: {x: 0, y: -30}
+});
+marker.on("mousemove", function(e) {
+infoWindow.open(mapObj, marker.getPosition());
+});
+}
+
+//地址反解析
+function REbdGEO(){
+var pt =[x[ind],r[ind]];
+geocodeSearch1(pt);
+ind ++;
+}
+function geocodeSearch1(pt){
+if(ind < x.length-1){
+setTimeout(window.REbdGEO,200); //计时器隔一定时间执行ebdGEO方法
+}
+myGeo.getAddress(pt, function(status, result) {
+if (status === 'complete' && result.info === 'OK') {
+regeocoder_CallBack(result);
+}
+else{
+document.getElementById("end").innerHTML +=ind +",反解析失败，请输入正确的十进制经纬度坐标！"+"</br>";
+}
+});
+
+}
+function regeocoder_CallBack(data) {
+var recom=data.regeocode.addressComponent;
+document.getElementById("end").innerHTML +=ind+",&nbsp"+recom.province+"/"+recom.city+"/"+recom.district+"/"+recom.street+"/"+recom.streetNumber+"&nbsp"+x[ind-1]+","+r[ind-1]+"</br>";
+}
+
+//打点
+
+function readThispoint(){
+var tempStrvalue = [];
+var tempStrid= [];
+var tempStrx =[]; //地址打点数组
+var tempStry =[];
+var marker1;
+var ps;
+var filePath= document.all.upfile.value;
+var oXL = new ActiveXObject("Excel.application");
+var oWB = oXL.Workbooks.open(filePath);
+oWB.worksheets(1).select();
+var i = 2;
+var oSheet = oWB.ActiveSheet;
+try{
+while(oSheet.Cells(i,2).value!=null){
+tempStrid[i-2]=oSheet.Cells(i,1).value;
+tempStrx[i-2]=oSheet.Cells(i,2).value;
+tempStry[i-2]=oSheet.Cells(i,3).value;
+tempStrvalue[i-2]=oSheet.Cells(i,4).value;
+ps=[tempStrx[i-2],tempStry[i-2]];
+document.getElementById("end").innerHTML +="<a id=\"reid\" onclick=\"dianji();\" style=\"background-color:white\">"+tempStrid[i-2]+",&nbsp" +tempStrvalue[i-2]+"&nbsp经纬度;"+ tempStrx[i-2] + ", " + tempStry[i-2] +"</a>"+"</br></br>" ;
+marker1 = new AMap.Marker({ //加点
+map: mapObj,
+position: ps
+});
+mapObj.setFitView();
+i++;
+}
+}catch(e){
+document.all.txtArea1.innerHTML = tempStr1;
+document.all.txtArea2.innerHTML = tempStr2;
+}
+oXL.Quit();
+alert("读取完毕");
+CollectGarbage();
+}
+// 读取本地excel文件
+function readThis(){
+var tempStr = "";
+var filePath= document.all.upfile.value;
+var oXL = new ActiveXObject("Excel.application");
+var oWB = oXL.Workbooks.open(filePath);
+oWB.worksheets(1).select();
+var i = 2; // 要取到的多少条数据
+var oSheet = oWB.ActiveSheet;
+try{
+while(oSheet.Cells(i,2).value!=null){
+tempStr+=("\""+oSheet.Cells(i,2).value+"\",")+"<br>";
+i++;
+}
+}catch(e){
+document.all.txtArea.innerHTML = tempStr;
+}
+document.all.txtArea.innerHTML = tempStr;
+adds = tempStr.split(',<br>');
+oXL.Quit();
+alert("读取完毕");
+CollectGarbage();
+}
+//保存反地址解析的结果到选择路径中的一个word里
+function exportToWord(controlid) {
+var control = document.getElementById(controlid);
+try {
+var oWD = new ActiveXObject("Word.Application");
+var oDC = oWD.Documents.Add('', 0, 1);
+var oRange = oDC.Range(0, 1);
+var sel = document.body.createTextRange();
+try {
+sel.moveToElementText(control);
+}
+catch(notE){
+alert("导出数据失败!");
+// window.close();
+return;
+}
+//sel.select();
+sel.execCommand("Copy");
+oRange.Paste();
+//oDC.saveAs(filePath + "/保存结果.doc");// 保存
+oWD.Application.Visible = true;
+alert("保存成功");
+//window.close();
+}
+catch(e){
+alert("导出数据失败,请检查是否安装Microsoft Word..");
+try { oWD.Quit(); } catch (ex) {}
+window.close();
+}
+}
+//点击数据在地图上显示
+function dianji(){
+var tbody = document.body;
+tbody.onclick = function(e){
+var target = e.target|| e.srcElement;
+if(target.tagName == 'A'){
+var point_x=parseFloat(target.innerText.split(';')[1].split(",")[0]);
+var point_y=parseFloat(target.innerText.split(';')[1].split(",")[1]);
+var point_lnglat=[point_x,point_y];
+var infoWindow1 = new AMap.InfoWindow({
+content: target.innerText,
+offset: {x: 0, y: -30}
+});
+infoWindow1.open(mapObj, point_lnglat);
+}
+}
+}
+</script>
+</html>

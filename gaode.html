@@ -53,6 +53,58 @@
 			#adds_3_s{
 				color: red;
 			}
+			
+			.input-card {
+			  display: flex;
+			  flex-direction: column;
+			  min-width: 0;
+			  word-wrap: break-word;
+			  background-color: #fff;
+			  background-clip: border-box;
+			  border-radius: .25rem;
+			  width: 22rem;
+			  border-width: 0;
+			  border-radius: 0.4rem;
+			  box-shadow: 0 2px 6px 0 rgba(114, 124, 245, .5);
+			  position: fixed;
+			  bottom: 1rem;
+			  right: 1rem;
+			  -ms-flex: 1 1 auto;
+			  flex: 1 1 auto;
+			  padding: 0.75rem 1.25rem;
+			}
+			.input-item {
+			  position: relative;
+			  display: -ms-flexbox;
+			  display: flex;
+			  -ms-flex-wrap: wrap;
+			  flex-wrap: wrap;
+			  -ms-flex-align: center;
+			  align-items: center;
+			  width: 100%;
+			  height: 3rem;
+			}
+			
+			.input-item:last-child {
+			  margin-bottom: 0;
+			}
+			
+			.input-text {
+			  line-height: 2rem;
+			  margin-right: 2rem;
+			}
+			
+			.input-item{
+		        height: 2.2rem;
+		    }
+		    .btn{
+		        width: 6rem;
+		        margin: 0 1rem 0 2rem;
+		    }
+		    .input-text{
+		        width: 4rem;
+		        margin-right:1rem;
+		    }
 		</style>
 	</head>
 	<body>
@@ -74,14 +126,32 @@
 				<img src="img/marker_blue_sprite.png"/>
 				<span>电能质量:</span><span id="adds_3"></span><span id="adds_3_s"></span>
 			</p>
-			<button onclick="clearAll()">清除区域</button>
+			<p>
+			<img src="img/marker_green_sprite.png"/>
+			<span>统计汇总:</span><span id="adds_4"></span><span id="adds_4_s"></span>
+		</p>
+			<!--<button onclick="clearAll()">清除区域</button>-->
 		</div>
 		<div id="r-result">
 			<div id="result"></div>
 		</div>
-		<script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=864bd40e7e9c3aa8a1278e0cc806f485&plugin=AMap.Geocoder"></script>
-		<script src="js/addr.js" type="text/javascript" charset="utf-8"></script>
-		<script src="js/city.js" type="text/javascript" charset="utf-8"></script>
-		<script src="js/gaode.js" type="text/javascript" charset="utf-8"></script>
+		<div class="input-card" style='width: 24rem;'>
+	        <div class="input-item">
+	          <!--<input type="radio" name='func' checked="" value='marker'><span class="input-text">画点</span>
+	          <input type="radio" name='func' value='polyline'><span class="input-text">画折线</span>-->
+	          <input type="radio" name='func' value='polygon'><span class="input-text" style='width:5rem;'>画多边形</span>
+	        </div>
+	        <div class="input-item">
+	          <!--<input type="radio" name='func' value='rectangle'><span class="input-text">画矩形</span>-->
+	          <!--<input type="radio" name='func' value='circle'><span class="input-text">画圆</span>-->
+	        </div>
+	        <div class="input-item">
+	            <input id="clear" type="button" class="btn" value="清除区域" />
+	          <input id="close" type="button" class="btn" value="关闭区域绘制" />
+	        </div>
+	    </div>
+		<script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=864bd40e7e9c3aa8a1278e0cc806f485&plugin=AMap.Geocoder,AMap.MouseTool"></script>
+		<script src="gaode/addr.js" type="text/javascript" charset="utf-8"></script>
+		<script src="gaode/gaode.min.js" type="text/javascript" charset="utf-8"></script>
 	</body>
 </html>

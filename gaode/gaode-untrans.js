@@ -2,35 +2,10 @@
 	var addrs = [];
 	var adds_0 =0,adds_1 = 0,adds_2 = 0,adds_3 = 0;
 	var adds_0_s = 0,adds_1_s = 0,adds_2_s = 0,adds_3_s = 0;
-	var icon_0 = "/baiduMap_project/img/marker_red_sprite.png";
-	var icon_1 = "/baiduMap_project/img/marker_OrangeRed_sprite.png";
-	var icon_2 = "/baiduMap_project/img/marker_Orange_sprite.png";
-	var icon_3 = "/baiduMap_project/img/marker_blue_sprite.png";
-//	var icon_0 = {
-//      type: 'image',
-//      image: '/baiduMap_project/img/marker_red_sprite.png',
-//      size: [6, 9],
-//      anchor: 'bottom-center',
-//  };
-//  var icon_1 = {
-//      type: 'image',
-//      image: '/baiduMap_project/img/marker_OrangeRed_sprite.png',
-//      size: [6, 9],
-//      anchor: 'bottom-center',
-//  };
-//  var icon_2 = {
-//      type: 'image',
-//      image: '/baiduMap_project/img/marker_Orange_sprite.png',
-//      size: [6, 9],
-//      anchor: 'bottom-center',
-//  };
-//  var icon_3 = {
-//      type: 'image',
-//      image: '/baiduMap_project/img/marker_blue_sprite.png',
-//      size: [6, 9],
-//      anchor: 'bottom-center',
-//  };
-	
+	var icon_0 = "../img/marker_red_sprite.png";
+	var icon_1 = "../img/marker_OrangeRed_sprite.png";
+	var icon_2 = "../img/marker_Orange_sprite.png";
+	var icon_3 = "../img/marker_blue_sprite.png";
 	function bdGEO(){
 		
 		addr.forEach((item,index) =>{
@@ -60,19 +35,11 @@
 		document.getElementById('adds_2').innerHTML = adds_2;
 		document.getElementById('adds_3').innerHTML = adds_3;
 		document.getElementById('adds_4').innerHTML = adds_0+adds_1+adds_2+adds_3;
-		setTimeout(() =>{
-		
-			console.log(addrs)
-			
-			var overlayGroups = new AMap.OverlayGroup(markers);
-			map.add(overlayGroups);
-		},3000);
 	}
 	
 	
 	
 	var map = new AMap.Map('l-map', {
-//		    resizeEnable: true,
 		    zoom: 12, //初始地图级别
       		center: [106.626359,29.500097], //初始地图中心点
 		});
@@ -93,10 +60,9 @@
                 obj.number = address['工单编号'];
                 obj.addr = address['故障地址'];
 		 		var marker = new AMap.Marker({
-//		            map: map,
+		            map: map,
 		            position: result.geocodes[0].location,
 		            icon: icon,
-//		            anchor: 'bottom-center', //设置锚点
 		            offset: new AMap.Pixel(0, -25),
 		            title:address['工单编号']+':  '+address['故障地址']
 		        });
@@ -127,14 +93,6 @@
 	    fillColor:'#00b0ff',
 	    strokeColor:'#80d8ff'
     });
-//  var radios = document.getElementsByName('func');
-//  for(var i=0;i<radios.length;i+=1){
-//      radios[i].onchange = function(e){
-//      	
-//
-//        draw(e.target.value)
-//      }
-//  }
 
     document.getElementById('clear').onclick = function(){
         clear();
@@ -148,17 +106,6 @@
 		document.getElementById('adds_3_s').innerHTML = '';
 		document.getElementById('adds_4_s').innerHTML = '';
     }
-//  document.getElementById('close').onclick = function(){
-//      mouseTool.close(true)//关闭，并清除覆盖物
-//      for(var i=0;i<radios.length;i+=1){
-//          radios[i].checked = false;
-//      }
-//      document.getElementById('adds_0_s').innerHTML = '';
-//		document.getElementById('adds_1_s').innerHTML = '';
-//		document.getElementById('adds_2_s').innerHTML = '';
-//		document.getElementById('adds_3_s').innerHTML = '';
-//		document.getElementById('adds_4_s').innerHTML = '';
-//  }
     
     function isInPolygon(path){
     	markerList.forEach(item =>{    		

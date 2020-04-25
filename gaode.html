@@ -12,7 +12,7 @@
 			}
 			.statistic{
 				width: auto;
-	    		height: 235px;
+	    		height: 285px;
 			    background: rgba(174, 220, 252, 0.6);
 			    position: fixed;
 			    top: 0;
@@ -50,7 +50,8 @@
 			#adds_0_s,
 			#adds_1_s,
 			#adds_2_s,
-			#adds_3_s{
+			#adds_3_s,
+			#adds_4_s{
 				color: red;
 			}
 			
@@ -127,19 +128,19 @@
 				<span>电能质量:</span><span id="adds_3"></span><span id="adds_3_s"></span>
 			</p>
 			<p>
-			<img src="img/marker_green_sprite.png"/>
-			<span>统计汇总:</span><span id="adds_4"></span><span id="adds_4_s"></span>
-		</p>
-			<!--<button onclick="clearAll()">清除区域</button>-->
+				<img src="img/marker_green_sprite.png"/>
+				<span>统计汇总:</span><span id="adds_4"></span><span id="adds_4_s"></span>
+			</p>
+			<button id="clear" onclick="clear()">清除区域</button>
 		</div>
 		<div id="r-result">
 			<div id="result"></div>
 		</div>
-		<div class="input-card" style='width: 24rem;'>
+		<div class="input-card" style='width: 24rem;display: none;'>
 	        <div class="input-item">
 	          <!--<input type="radio" name='func' checked="" value='marker'><span class="input-text">画点</span>
 	          <input type="radio" name='func' value='polyline'><span class="input-text">画折线</span>-->
-	          <input type="radio" name='func' value='polygon'><span class="input-text" style='width:5rem;'>画多边形</span>
+	          <input id="polygon-radio" type="radio" name='func' value='polygon'><label for="polygon-radio" class="input-text" style='width:5rem;'>画多边形</label>
 	        </div>
 	        <div class="input-item">
 	          <!--<input type="radio" name='func' value='rectangle'><span class="input-text">画矩形</span>-->
@@ -152,6 +153,6 @@
 	    </div>
 		<script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=864bd40e7e9c3aa8a1278e0cc806f485&plugin=AMap.Geocoder,AMap.MouseTool"></script>
 		<script src="gaode/addr.js" type="text/javascript" charset="utf-8"></script>
-		<script src="gaode/gaode.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="gaode/gaode.js" type="text/javascript" charset="utf-8"></script>
 	</body>
 </html>

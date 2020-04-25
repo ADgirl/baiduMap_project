@@ -97,7 +97,7 @@
 		            position: result.geocodes[0].location,
 		            icon: icon,
 //		            anchor: 'bottom-center', //设置锚点
-		            offset: new AMap.Pixel(0, -25),
+		            offset: new AMap.Pixel(0, -19),
 		            title:address['工单编号']+':  '+address['故障地址']
 		        });
 		        markerList.push(obj);

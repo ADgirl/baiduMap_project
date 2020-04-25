@@ -2,10 +2,10 @@
 	var addrs = [];
 	var adds_0 =0,adds_1 = 0,adds_2 = 0,adds_3 = 0;
 	var adds_0_s = 0,adds_1_s = 0,adds_2_s = 0,adds_3_s = 0;
-	var icon_0 = "/baiduMap_project/img/marker_red_sprite.png";
-	var icon_1 = "/baiduMap_project/img/marker_OrangeRed_sprite.png";
-	var icon_2 = "/baiduMap_project/img/marker_Orange_sprite.png";
-	var icon_3 = "/baiduMap_project/img/marker_blue_sprite.png";
+	var icon_0 = "../img/marker_red_sprite.png";
+	var icon_1 = "../img/marker_OrangeRed_sprite.png";
+	var icon_2 = "../img/marker_Orange_sprite.png";
+	var icon_3 = "../img/marker_blue_sprite.png";
 //	var icon_0 = {
 //      type: 'image',
 //      image: '/baiduMap_project/img/marker_red_sprite.png',

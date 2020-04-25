@@ -93,7 +93,7 @@
                 obj.number = address['工单编号'];
                 obj.addr = address['故障地址'];
 		 		var marker = new AMap.Marker({
-//		            map: map,
+		            map: map,
 		            position: result.geocodes[0].location,
 		            icon: icon,
 //		            anchor: 'bottom-center', //设置锚点

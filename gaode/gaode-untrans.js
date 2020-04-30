@@ -108,21 +108,26 @@
     }
     
     function isInPolygon(path){
+    	let s1=[],s2=[],s3=[],s4=[];
     	markerList.forEach(item =>{    		
     		var isPointInRing = AMap.GeometryUtil.isPointInRing(item.lnglat,path);
     		if(isPointInRing){
     			switch (item.type){
     				case 0:
     					adds_0_s++;
+    					s1.push(item.number+'-'+item.addr)
     					break;
     				case 1:
     					adds_1_s++;
+    					s2.push(item.number+'-'+item.addr)
     					break;
     				case 2:
     					adds_2_s++;
+    					s3.push(item.number+'-'+item.addr)
     					break;
     				case 3:
     					adds_3_s++;
+    					s4.push(item.number+'-'+item.addr)
     					break;
     					
     			}
@@ -133,6 +138,14 @@
 		document.getElementById('adds_2_s').innerHTML = adds_2_s;
 		document.getElementById('adds_3_s').innerHTML = adds_3_s;
 		document.getElementById('adds_4_s').innerHTML = adds_0_s+adds_1_s+adds_2_s+adds_3_s;
+		console.log('低压故障：')
+		console.log(s1);
+		console.log('高压故障：');
+		console.log(s2);
+		console.log('计量故障：');
+		console.log(s3);
+		console.log('电能质量：');
+		console.log(s4);
     }
 
      map.on("complete", function(){
